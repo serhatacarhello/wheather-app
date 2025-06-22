@@ -1,12 +1,59 @@
-# React + Vite
+# Weather App 🌤️
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern weather application built with React and Vite that displays 7-day weather forecasts for Turkish cities.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 7-day weather forecast
+- Support for all Turkish cities
+- Responsive design
+- Modern UI with Tailwind CSS
+- Real-time weather data from OpenWeatherMap API
 
-## Expanding the ESLint configuration
+## Setup
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Create a `.env` file in the root directory and add your OpenWeatherMap API key:
+   ```
+   VITE_OPENWEATHER_API_KEY=your_api_key_here
+   ```
+
+4. Get your free API key from [OpenWeatherMap](https://openweathermap.org/api)
+
+5. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+## Technologies Used
+
+- React 19
+- Vite
+- Tailwind CSS
+- Axios for API calls
+- date-fns for date formatting
+- OpenWeatherMap API
+
+## Project Structure
+
+```
+src/
+├── components/
+│   ├── CitySelector.jsx
+│   └── WeatherCard.jsx
+├── context/
+│   └── WeatherContext.jsx
+├── services/
+│   └── weatherService.js
+├── App.jsx
+└── main.jsx
+```
+
+## API
+
+This app uses the OpenWeatherMap API to fetch weather data. You need to sign up for a free account to get an API key.

@@ -4,8 +4,8 @@ import { fetchWeatherData } from "../services/weatherService";
 const WeatherContext = createContext();
 
 export const WeatherProvider = ({ children }) => {
-  const [city, setCity] = useState("Bursa"); // Varsayılan şehir
-  const [weatherData, setWeatherData] = useState(null);
+  const [city, setCity] = useState("Istanbul"); // Default city
+  const [weatherData, setWeatherData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -13,16 +13,18 @@ export const WeatherProvider = ({ children }) => {
     const getWeather = async () => {
       try {
         setLoading(true);
-        const data = await fetchWeatherData(city);
-        console.log(data);
-        setWeatherData(data);
         setError(null);
+        const data = await fetchWeatherData(city);
+        setWeatherData(data);
       } catch (err) {
-        setError("Hava durumu verileri alınamadı. 😔");
+        console.error("Weather fetch error:", err);
+        setError(err.message || "Hava durumu verileri alınamadı. 😔");
+        setWeatherData([]);
       } finally {
         setLoading(false);
       }
     };
+    
     getWeather();
   }, [city]);
 
@@ -35,4 +37,10 @@ export const WeatherProvider = ({ children }) => {
   );
 };
 
-export const useWeather = () => useContext(WeatherContext);
+export const useWeather = () => {
+  const context = useContext(WeatherContext);
+  if (!context) {
+    throw new Error("useWeather must be used within a WeatherProvider");
+  }
+  return context;
+};
