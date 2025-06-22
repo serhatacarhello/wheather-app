@@ -4,6 +4,7 @@ const LanguageSwitch = () => {
   const { language, setLanguage } = useLanguage();
 
   const toggleLanguage = () => {
+    localStorage.setItem("language", language === "tr" ? "en" : "tr");
     setLanguage(language === "tr" ? "en" : "tr");
   };
 

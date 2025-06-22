@@ -3,8 +3,7 @@ import { createContext, useContext, useState, useMemo } from "react";
 const LanguageContext = createContext();
 
 export const LanguageProvider = ({ children }) => {
-  const [language, setLanguage] = useState("tr"); // Default to Turkish
-
+  const [language, setLanguage] = useState(localStorage.getItem("lang")||"tr"); 
   // Memoized translations
   const translations = useMemo(() => ({
     tr: {
