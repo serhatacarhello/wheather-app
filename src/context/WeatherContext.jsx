@@ -4,7 +4,7 @@ import { fetchWeatherData } from "../services/weatherService";
 const WeatherContext = createContext();
 
 export const WeatherProvider = ({ children }) => {
-  const [city, setCity] = useState("Istanbul"); // Default city
+  const [city, setCity] = useState("Bursa"); // Default city
   const [weatherData, setWeatherData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
