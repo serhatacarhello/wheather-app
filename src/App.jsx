@@ -1,9 +1,17 @@
+import { useMemo } from "react";
 import CitySelector from "./components/CitySelector";
 import WeatherCard from "./components/WeatherCard";
 import { useWeather } from "./context/WeatherContext";
 
 function App() {
-  const { weatherData, loading, error, city } = useWeather();
+  const { weatherData, loading, error, city, isDataFresh, refreshWeather } = useWeather();
+
+  // Memoize weather cards to prevent unnecessary re-renders
+  const weatherCards = useMemo(() => 
+    weatherData.map((day, index) => (
+      <WeatherCard key={day.dt} day={day} index={index} />
+    )), [weatherData]
+  );
 
   if (loading) {
     return (
@@ -24,6 +32,12 @@ function App() {
           <h2 className="text-xl font-bold text-gray-800 mb-4">Hata Oluştu</h2>
           <p className="text-red-600 mb-6">{error}</p>
           <CitySelector />
+          <button
+            onClick={refreshWeather}
+            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+          >
+            Tekrar Dene
+          </button>
         </div>
       </div>
     );
@@ -47,13 +61,16 @@ function App() {
         <header className="text-center mb-8">
           <h1 className="text-4xl font-bold text-white mb-4">Hava Durumu 🌍</h1>
           <CitySelector />
-          <h2 className="text-2xl text-white font-semibold">{city} - 7 Günlük Tahmin</h2>
+          <div className="flex items-center justify-center gap-4">
+            <h2 className="text-2xl text-white font-semibold">{city} - 7 Günlük Tahmin</h2>
+            {isDataFresh && (
+              <span className="text-green-300 text-sm">✓ Güncel</span>
+            )}
+          </div>
         </header>
         
         <main className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-4">
-          {weatherData.map((day, index) => (
-            <WeatherCard key={day.dt} day={day} index={index} />
-          ))}
+          {weatherCards}
         </main>
         
         <footer className="mt-12 text-center">

@@ -1,4 +1,5 @@
 import { useWeather } from "../context/WeatherContext";
+import { useMemo, useCallback } from "react";
 
 const cities = [
   "Adana", "Adıyaman", "Afyonkarahisar", "Ağrı", "Aksaray", "Amasya", "Ankara", 
@@ -18,6 +19,20 @@ const cities = [
 const CitySelector = () => {
   const { city, setCity, loading } = useWeather();
 
+  // Memoize city options to prevent re-rendering
+  const cityOptions = useMemo(() => 
+    cities.map((cityName) => (
+      <option key={cityName} value={cityName}>
+        {cityName}
+      </option>
+    )), []
+  );
+
+  // Memoize change handler
+  const handleCityChange = useCallback((e) => {
+    setCity(e.target.value);
+  }, [setCity]);
+
   return (
     <div className="mb-6">
       <label htmlFor="city-select" className="sr-only">
@@ -26,15 +41,11 @@ const CitySelector = () => {
       <select
         id="city-select"
         value={city}
-        onChange={(e) => setCity(e.target.value)}
+        onChange={handleCityChange}
         disabled={loading}
         className="p-3 border-2 border-white/20 rounded-lg bg-white/90 backdrop-blur-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed min-w-[200px]"
       >
-        {cities.map((cityName) => (
-          <option key={cityName} value={cityName}>
-            {cityName}
-          </option>
-        ))}
+        {cityOptions}
       </select>
     </div>
   );
