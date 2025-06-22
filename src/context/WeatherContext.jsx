@@ -1,4 +1,11 @@
-import { createContext, useContext, useState, useEffect, useMemo, useCallback } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+} from "react";
 import { fetchWeatherData } from "../services/weatherService";
 import { useLanguage } from "./LanguageContext";
 
@@ -10,11 +17,11 @@ export const WeatherProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [lastFetchTime, setLastFetchTime] = useState(null);
-  
+
   const { language } = useLanguage();
 
-  // Cache duration in milliseconds (5 minutes)
-  const CACHE_DURATION = 5 * 60 * 1000;
+  // Cache duration in milliseconds (15 minutes)
+  const CACHE_DURATION = 15 * 60 * 1000;
 
   // Memoized function to check if data is still fresh
   const isDataFresh = useMemo(() => {
@@ -47,15 +54,18 @@ export const WeatherProvider = ({ children }) => {
   }, [city, language, getWeather, isDataFresh]);
 
   // Memoized context value to prevent unnecessary re-renders
-  const contextValue = useMemo(() => ({
-    city,
-    setCity,
-    weatherData,
-    loading,
-    error,
-    isDataFresh,
-    refreshWeather: () => getWeather(city, language)
-  }), [city, weatherData, loading, error, isDataFresh, getWeather, language]);
+  const contextValue = useMemo(
+    () => ({
+      city,
+      setCity,
+      weatherData,
+      loading,
+      error,
+      isDataFresh,
+      refreshWeather: () => getWeather(city, language),
+    }),
+    [city, weatherData, loading, error, isDataFresh, getWeather, language]
+  );
 
   return (
     <WeatherContext.Provider value={contextValue}>
