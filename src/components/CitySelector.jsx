@@ -1,4 +1,5 @@
 import { useWeather } from "../context/WeatherContext";
+import { useLanguage } from "../context/LanguageContext";
 import { useMemo, useCallback } from "react";
 
 const cities = [
@@ -18,6 +19,7 @@ const cities = [
 
 const CitySelector = () => {
   const { city, setCity, loading } = useWeather();
+  const { t } = useLanguage();
 
   // Memoize city options to prevent re-rendering
   const cityOptions = useMemo(() => 
@@ -36,7 +38,7 @@ const CitySelector = () => {
   return (
     <div className="mb-6">
       <label htmlFor="city-select" className="sr-only">
-        Şehir Seçin
+        {t.selectCity}
       </label>
       <select
         id="city-select"

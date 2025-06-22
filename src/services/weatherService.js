@@ -3,7 +3,7 @@ import axios from "axios";
 const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
 const BASE_URL = "https://api.openweathermap.org/data/2.5/forecast";
 
-export const fetchWeatherData = async (city_name, cnt = 7) => {
+export const fetchWeatherData = async (city_name, cnt = 7, lang = "tr") => {
   if (!API_KEY) {
     throw new Error("API key is missing. Please add VITE_OPENWEATHER_API_KEY to your .env file");
   }
@@ -15,6 +15,7 @@ export const fetchWeatherData = async (city_name, cnt = 7) => {
         cnt: cnt * 8, // 8 forecasts per day (every 3 hours)
         appid: API_KEY,
         units: "metric",
+        lang: lang, // Add language parameter
       },
     });
 

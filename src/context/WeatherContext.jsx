@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, useMemo, useCallback } from "react";
 import { fetchWeatherData } from "../services/weatherService";
+import { useLanguage } from "./LanguageContext";
 
 const WeatherContext = createContext();
 
@@ -9,6 +10,8 @@ export const WeatherProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [lastFetchTime, setLastFetchTime] = useState(null);
+  
+  const { language } = useLanguage();
 
   // Cache duration in milliseconds (5 minutes)
   const CACHE_DURATION = 5 * 60 * 1000;
@@ -20,11 +23,11 @@ export const WeatherProvider = ({ children }) => {
   }, [lastFetchTime, CACHE_DURATION]);
 
   // Memoized weather fetch function
-  const getWeather = useCallback(async (cityName) => {
+  const getWeather = useCallback(async (cityName, lang) => {
     try {
       setLoading(true);
       setError(null);
-      const data = await fetchWeatherData(cityName);
+      const data = await fetchWeatherData(cityName, 7, lang);
       setWeatherData(data);
       setLastFetchTime(Date.now());
     } catch (err) {
@@ -37,11 +40,11 @@ export const WeatherProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    // Only fetch if data is not fresh or city has changed
-    if (!isDataFresh) {
-      getWeather(city);
+    // Fetch data when city or language changes, or when data is not fresh
+    if (!isDataFresh || language) {
+      getWeather(city, language);
     }
-  }, [city, getWeather, isDataFresh]);
+  }, [city, language, getWeather, isDataFresh]);
 
   // Memoized context value to prevent unnecessary re-renders
   const contextValue = useMemo(() => ({
@@ -51,8 +54,8 @@ export const WeatherProvider = ({ children }) => {
     loading,
     error,
     isDataFresh,
-    refreshWeather: () => getWeather(city)
-  }), [city, weatherData, loading, error, isDataFresh, getWeather]);
+    refreshWeather: () => getWeather(city, language)
+  }), [city, weatherData, loading, error, isDataFresh, getWeather, language]);
 
   return (
     <WeatherContext.Provider value={contextValue}>

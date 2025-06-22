@@ -1,8 +1,11 @@
 import { format } from "date-fns";
-import { tr } from "date-fns/locale";
+import { tr, enUS } from "date-fns/locale";
 import { useMemo } from "react";
+import { useLanguage } from "../context/LanguageContext";
 
 const WeatherCard = ({ day, index }) => {
+  const { language, t } = useLanguage();
+  
   // Memoize date calculation
   const date = useMemo(() => new Date(day.dt * 1000), [day.dt]);
   const isToday = index === 0;
@@ -14,11 +17,12 @@ const WeatherCard = ({ day, index }) => {
     </div>
   ), [day.weather]);
 
-  // Memoize formatted date
+  // Memoize formatted date with proper locale
   const formattedDate = useMemo(() => {
-    if (isToday) return "Bugün";
-    return format(date, "EEEE", { locale: tr });
-  }, [date, isToday]);
+    if (isToday) return t.today;
+    const locale = language === "tr" ? tr : enUS;
+    return format(date, "EEEE", { locale });
+  }, [date, isToday, language, t.today]);
 
   // Memoize temperature calculations
   const temperatures = useMemo(() => ({
@@ -28,8 +32,8 @@ const WeatherCard = ({ day, index }) => {
 
   // Memoize weather description
   const weatherDescription = useMemo(() => 
-    day.weather?.[0]?.description || "Bilinmiyor",
-    [day.weather]
+    day.weather?.[0]?.description || t.unknown,
+    [day.weather, t.unknown]
   );
 
   return (
