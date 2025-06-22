@@ -5,15 +5,11 @@ const WeatherCard = ({ day, index }) => {
   const date = new Date(day.dt * 1000);
   const isToday = index === 0;
   
-  const weatherIcon = day.weather?.[0]?.icon ? (
-    <img
-      src={`https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`}
-      alt={day.weather[0].description}
-      className="w-16 h-16 mx-auto"
-      loading="lazy"
-    />
-  ) : (
-    <div className="text-4xl">{getWeatherIcon(day.weather?.[0]?.main)}</div>
+  // Always use emoji icons for better reliability
+  const weatherIcon = (
+    <div className="text-4xl mb-2">
+      {getWeatherIcon(day.weather?.[0]?.main)}
+    </div>
   );
 
   const formatDate = (date, isToday) => {
@@ -55,17 +51,23 @@ const WeatherCard = ({ day, index }) => {
 const getWeatherIcon = (weather) => {
   const icons = {
     Clear: "☀️",
-    Clouds: "⛅",
+    Clouds: "☁️",
     Rain: "🌧️",
     Snow: "❄️",
     Thunderstorm: "⛈️",
     Drizzle: "🌦️",
     Mist: "🌫️",
     Fog: "🌫️",
-    Haze: "🌫️"
+    Haze: "🌫️",
+    Smoke: "🌫️",
+    Dust: "🌪️",
+    Sand: "🌪️",
+    Ash: "🌋",
+    Squall: "💨",
+    Tornado: "🌪️"
   };
   
-  return icons[weather] || "🌈";
+  return icons[weather] || "🌤️";
 };
 
 export default WeatherCard;
