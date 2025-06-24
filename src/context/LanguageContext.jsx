@@ -8,7 +8,7 @@ export const LanguageProvider = ({ children }) => {
   const translations = useMemo(() => ({
     tr: {
       title: "Hava Durumu 🌍",
-      forecast: "7 Günlük Tahmin",
+      forecast: " Günlük Tahmin",
       loading: "Yükleniyor... ⏳",
       error: "Hata Oluştu",
       retry: "Tekrar Dene",
@@ -31,7 +31,7 @@ export const LanguageProvider = ({ children }) => {
     },
     en: {
       title: "Weather Forecast 🌍",
-      forecast: "7-Day Forecast",
+      forecast: "-Day Forecast",
       loading: "Loading... ⏳",
       error: "Error Occurred",
       retry: "Try Again",
