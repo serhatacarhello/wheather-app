@@ -66,10 +66,10 @@ function App() {
       <LanguageSwitch />
       <div className="max-w-7xl mx-auto">
         <header className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-4">{t.title} hello</h1>
+          <h1 className="text-4xl font-bold text-white mb-4">{t.title}</h1>
           <CitySelector />
           <div className="flex items-center justify-center gap-4">
-            <h2 className="text-2xl text-white font-semibold">{city} - {t.forecast}</h2>
+            <h2 className="text-2xl text-white font-semibold">{city} - {t.forecast}hello</h2>
             {isDataFresh && (
               <span className="text-green-300 text-sm">{t.current}</span>
             )}
