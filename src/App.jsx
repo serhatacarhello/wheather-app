@@ -15,6 +15,7 @@ function App() {
       <WeatherCard key={day.dt} day={day} index={index} />
     )), [weatherData]
   );
+  const length_forecast = weatherCards.length
 
   if (loading) {
     return (
@@ -69,7 +70,7 @@ function App() {
           <h1 className="text-4xl font-bold text-white mb-4">{t.title}</h1>
           <CitySelector />
           <div className="flex items-center justify-center gap-4">
-            <h2 className="text-2xl text-white font-semibold">{city} - {t.forecast}hello</h2>
+            <h2 className="text-2xl text-white font-semibold">{city} - {length_forecast}{t.forecast}</h2>
             {isDataFresh && (
               <span className="text-green-300 text-sm">{t.current}</span>
             )}
